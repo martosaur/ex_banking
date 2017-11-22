@@ -79,7 +79,7 @@ defmodule ExBanking.Worker do
           {^user, balance, [{action, from} | rest]} ->
             GenServer.reply(from, perform_action(user, balance, action, rest))
             unless rest == [], do: send(self(), {:process, user})
-          error -> Logger.warn("Was going to process user #{user} but couldn't retrieve it from storage: #{error}")
+          error -> Logger.warn("Was going to process user #{user} but no actions was found: #{inspect(error)}")
         end
         Mutex.release(ExBanking.Lock, lock)
     end
